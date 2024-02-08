@@ -56,5 +56,7 @@ Will think about primitives that could improve this design and/or create even be
     - EIPs like ERC-6551, EIP-6066 and EIP-5058.
     - Consider what happens when Delegator is a contract
     - Consider what happens when Delegator transfers the NFT to another address, would result in mismatches in the registry.
+    - To have multichain compatibility we'd need a deployer contract
+    - Would mine and address that its create2 results in a contract with leadings 0s to minimize gas costs.
 
 Also would like to figure out how to solve the Soulbond NFTs problem.
