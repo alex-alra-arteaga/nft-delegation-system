@@ -13,7 +13,7 @@
 ### What's next?
 - Will add support for ERC20, ERC1155.
 - Will create time-locked delegations.
-- Will create a wrapper NFT to ensure that weird/edge custom NFT implementations aren't vulnerable or impractical, like Soulbound NFTs.
-- This last point can also a nice to have, even for delegatees to get a Liquid NFT, but it's not a priority at the moment.
+- Will test major NFT implementations like ERC721A, ERC721C are compatible
+- Can be a nice to have for delegatees to get a Liquid NFT, but it's not a priority at the moment.
 - Will think if a compatibility with EIPs like ERC-6551, EIP-6066 and EIP-5058 is possible and/or desirable.
 - Add event logging.

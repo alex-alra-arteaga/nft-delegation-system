@@ -35,7 +35,6 @@ At the moment, I think that the second option is a no-brainer.
 This designs comes with some inconveniences:
     - The delegator has to transfer the NFT to the registry, he loses direct ownership but can benefit from delegatees benefits and could at any moment transfer back its NFT because the registry would have set an approval for it.
     - All the NFTs are stored in the same registry (even that if code is kept simple, a e2e security is 99.9% assured).
-    - Incompatibility for Soulbond NFTs, since my initial design doesn't support it.
     - Eligibility for airdrops is complicated, since all the NFTs are stored in the same registry (can be solved by new registry per NFT collection).
     - Delegatee benefits from 'push' interactions, but not from 'pull' interactions, since the NFT is not in its wallet.
 
