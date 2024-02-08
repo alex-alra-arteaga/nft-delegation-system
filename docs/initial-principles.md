@@ -53,7 +53,7 @@ Note: Last 2 drawbacks can be solved by flash loaning NFT to the registry on mul
 Will think about primitives that could improve this design and/or create even better designs:
     - Meta transactions
     - Wrapper NFTs, to ensure that weird/edge custom NFT implementations aren't vulnerable. This is related to the prior point, if we them in ERC721Permit implementations.
-    - EIPs like ERC-6551, EIP-6066 and EIP-5058.
+    - Have taken a quick look to my notes of 'most interesting EIPs', and think that EIPs like ERC-6551, EIP-6066 and EIP-5058 can have interesting synergies with this project.
     - Consider what happens when Delegator is a contract
     - Consider what happens when Delegator transfers the NFT to another address, would result in mismatches in the registry.
     - To have multichain compatibility we'd need a deployer contract
