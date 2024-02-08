@@ -36,6 +36,10 @@ This designs comes with some inconveniences:
     - The delegator has to transfer the NFT to the registry, he loses direct ownership but can benefit from delegatees benefits and could at any moment transfer back its NFT because the registry would have set an approval for it.
     - All the NFTs are stored in the same registry (even that if code is kept simple, a e2e security is 99.9% assured).
     - Incompatibility for Soulbond NFTs, since my initial design doesn't support it.
+    - Eligibility for airdrops is complicated, since all the NFTs are stored in the same registry (can be solved by new registry per NFT collection).
+    - Delegatee benefits from 'push' interactions, but not from 'pull' interactions, since the NFT is not in its wallet.
+
+Note: Last 2 drawbacks can be solved by flash loaning NFT to the registry on multicall operation and then returning it to the delegator.
 
 ### What I like about this design
 · It's very minimalistic, follows KISS, and it's gas efficient.   
@@ -49,6 +53,8 @@ This designs comes with some inconveniences:
 Will think about primitives that could improve this design and/or create even better designs:
     - Meta transactions
     - Wrapper NFTs, to ensure that weird/edge custom NFT implementations aren't vulnerable. This is related to the prior point, if we them in ERC721Permit implementations.
-    - EIPs like ERC-6551
+    - EIPs like ERC-6551, EIP-6066 and EIP-5058.
+    - Consider what happens when Delegator is a contract
+    - Consider what happens when Delegator transfers the NFT to another address, would result in mismatches in the registry.
 
 Also would like to figure out how to solve the Soulbond NFTs problem.
