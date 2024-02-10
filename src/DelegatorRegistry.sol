@@ -2,10 +2,10 @@
 
 pragma solidity 0.8.20;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/proxy/Clones.sol";
-import "./interfaces/IDelegatorRegistry.sol";
-import "./interfaces/IDelegatorAccount.sol";
+import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import {Clones} from "@openzeppelin/contracts/proxy/Clones.sol";
+import {IDelegatorRegistry} from "./interfaces/IDelegatorRegistry.sol";
+import {IDelegatorAccount} from "./interfaces/IDelegatorAccount.sol";
 
 /**
  * @title DelegatorRegistry
@@ -22,12 +22,12 @@ contract DelegatorRegistry is IDelegatorRegistry {
         implementation = _implementation;
     }
 
-    function registerDelegator() public {
+    function registerDelegator() public returns (address account) {
         bytes32 salt = keccak256(abi.encodePacked(msg.sender));
 
-        if (delegatorToAccount[msg.sender] != address(0)) revert DelegatorAlreadyRegistered();
+        account = implementation.cloneDeterministic(salt);
 
-        address account = implementation.cloneDeterministic(salt);
+        IDelegatorAccount(account).initialize(msg.sender);
 
         delegatorToAccount[msg.sender] = account;
 
@@ -39,6 +39,4 @@ contract DelegatorRegistry is IDelegatorRegistry {
 
         return implementation.predictDeterministicAddress(salt);
     }
-
-
 }

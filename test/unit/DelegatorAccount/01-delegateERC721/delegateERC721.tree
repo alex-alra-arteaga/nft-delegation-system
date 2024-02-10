@@ -1,0 +1,21 @@
+DelegateERC721Test
+├── when msg sender is not the delegator
+│   └── it should revert with NotDelegator.
+├── when the executing deadline is passed
+│   └── it should revert with ExpiredDeadline.
+├── when the token is not approved for the delegate
+│   └── it should revert with NotApproved.
+├── when account is reentered in same tx
+│   └── it should revert with NotDelegator.
+└── given the token is approved for the delegatee
+    ├── given expiration time is gte current time
+    │   └── it should store the expiration time for the caller and delegatee.
+    ├── given expiration time is lt current time
+    │   └── it should store max uint256 value, signaling there is no expiration.
+    ├── given nftContract is not yet registered
+    │   └── it should register the nftContract.
+    ├── it should store the delegatee permissions.
+    ├── given the nft delegation had already been done
+    │    └── it should emit the ChangedDelegateeConfig event.
+    └── given the nft delegation has not been done
+         └── it should emit the NewERC721Delegated event.

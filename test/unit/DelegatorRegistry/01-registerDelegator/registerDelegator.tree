@@ -1,0 +1,5 @@
+RegisterDelegatorTest
+├── when msg sender already has an account
+│   └── it reverts with ERC1167FailedCreateClone.
+├── it deploys an instance of implementation.
+└── it emits a DelegatorCreated event.

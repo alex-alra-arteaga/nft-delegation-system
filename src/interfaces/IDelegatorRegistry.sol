@@ -3,9 +3,7 @@
 pragma solidity 0.8.20;
 
 interface IDelegatorRegistry {
-    error DelegatorAlreadyRegistered();
-
     event DelegatorRegistered(address indexed delegator, address indexed account);
 
-    function registerDelegator() external;
+    function registerDelegator() external returns (address account);
 }

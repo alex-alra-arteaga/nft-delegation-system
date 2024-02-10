@@ -1,0 +1,27 @@
+MulticallTest
+├── when multicall calls itself
+│   └── it should revert with ReentrancyProhibited.
+├── when msg sender is not a DelegateERC721
+│   └── it should revert with NotDelegated.
+├── when NFT is not registered
+│   └── it should revert with NotDelegated.
+├── when expiration time is lt current time
+│   └── it should revert with NotDelegated.
+├── when the token is not approved for the delegate
+│   └── it should revert with ERC721InsufficientApproval.
+└── given the token is approved for the delegate
+    ├── given a target address is any registered NFT contract and permissions are RESTRICTED
+    │   └── it should revert with PermissionViolation.
+    ├── it should call the target contract with the given data and value with no reverts.
+    ├── given the call reverts
+    │   ├── given continueOnFailure is false
+    │   │   └── it should revert with CallError.
+    │   └── given continueOnFailure is true
+    │       └── it should not revert.
+    └── given the call doesnt revert
+        ├── given the account keeps ETH
+        │   ├── given the ETH transfer fails
+        │   │   └── it should revert with CallError.
+        │   └── given the ETH transfer succeeds
+        │       └── it should transfer the ETH back to the delegatee.
+        └── it should transfer back the NFT.

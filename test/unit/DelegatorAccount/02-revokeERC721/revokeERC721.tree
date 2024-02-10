@@ -1,0 +1,7 @@
+RevokeERC721Test
+├── when msg sender is not the delegator
+│   └── it should revert with NotDelegator.
+├── when account is reentered in same tx
+│   └── it should revert with CallError because of a NotDelegator error.
+├── it should set the expiration time for the caller and delegatee to 1.
+└── it should emit an ERC721Revoked event.
