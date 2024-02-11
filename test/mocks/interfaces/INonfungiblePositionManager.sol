@@ -11,10 +11,14 @@ interface INonfungiblePositionManager {
         uint256 _deadline
     ) external;
 
-    function collect(
-        address _to,
-        uint256 _tokenId,
-        uint256 _amount,
-        uint256 _deadline
-    ) external;
+    struct CollectParams {
+        uint256 tokenId;
+        address recipient;
+        uint128 amount0Max;
+        uint128 amount1Max;
+    }
+
+    function collect(CollectParams calldata params) external;
+
+    function setApprovalForAll(address operator, bool approved) external;
 }

@@ -4,7 +4,7 @@ pragma solidity 0.8.20;
 
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {IDelegatorAccount} from "./interfaces/IDelegatorAccount.sol";
-import {console} from "forge-std/console.sol";
+
 /**
  * @title DelegatorAccount
  * @author Alex Arteaga, future Openfort Blockchain Engineer
@@ -168,7 +168,7 @@ contract DelegatorAccount is IDelegatorAccount {
 
         proposedCalldata[hash] = ProposalStatus.PENDING;
 
-        emit CalldataProposed(msg.sender, targets, data, value, info, continueOnFailure);
+        emit CalldataProposed(hash, msg.sender, targets, data, value, info, continueOnFailure);
     }
 
 
@@ -176,13 +176,14 @@ contract DelegatorAccount is IDelegatorAccount {
      * @notice Set the status of a proposal
      * @notice Only callable by the delegator
      * @notice The proposal must be `PENDING` to be approved or rejected
+     * @notice Once a proposal is approved or rejected, it cannot be changed
      * @param hash Hash of the proposal calldata
      * @param status New status of the proposal, can only be `APPROVED` or `REJECTED`
      */
     function setProposalStatus(bytes32 hash, ProposalStatus status) public onlyDelegator {
         ProposalStatus currentStatus = proposedCalldata[hash];
-        if (currentStatus != ProposalStatus.PENDING || status != ProposalStatus.EXECUTED || status == ProposalStatus.REJECTED)
-            revert InvalidProposalStatus(status);
+        if (currentStatus != ProposalStatus.PENDING || (status != ProposalStatus.APPROVED && status != ProposalStatus.REJECTED))
+            revert InvalidProposalStatus(currentStatus, status);
 
         proposedCalldata[hash] = status;
 
@@ -249,7 +250,6 @@ contract DelegatorAccount is IDelegatorAccount {
             (bool success, bytes memory returnData) = targets[i].call{
                 value: value[i]
             }(data[i]);
-            console.log(success);
             if (!success && !continueOnFailure)
                 revert CallError(returnData, i);
 

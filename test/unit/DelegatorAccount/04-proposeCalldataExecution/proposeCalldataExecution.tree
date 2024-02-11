@@ -1,0 +1,7 @@
+ProposeCalldataExecutionTest
+├── when msg sender is not delegatee
+│   └── it should revert with NotDelegated.
+├── when msg sender permission is UNRESTRICTED
+│   └── it should revert with NotDelegateeWithRestrictedPermission.
+├── it should store the proposal status as Pending.
+└── it should emit a ProposalCreated event.

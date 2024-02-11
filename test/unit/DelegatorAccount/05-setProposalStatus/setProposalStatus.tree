@@ -1,0 +1,9 @@
+SetProposalStatusTest
+├── when msg sender is not delegator
+│   └── it should revert with NotDelegator.
+├── when the proposal is not found
+│   └── it should revert with InvalidProposalStatus.
+├── when the new proposalStatus is neither Executed nor Rejected
+│   └── it should revert with InvalidProposalStatus.
+├── it should set proposal status.
+└── it should emit ProposalStatusChanged event.

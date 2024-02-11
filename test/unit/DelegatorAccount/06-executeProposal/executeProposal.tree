@@ -1,0 +1,6 @@
+ExecuteProposalTest
+├── when proposed calldata is not approved
+│   └── it should revert with NotDelegated.
+└── given the proposed calldata matches with the approved calldata
+    ├── it should set the proposal state to Executed.
+    └── it should execute the proposed calldata.

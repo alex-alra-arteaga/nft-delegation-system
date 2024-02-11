@@ -38,7 +38,7 @@ interface IDelegatorAccount {
     error CallError(bytes message, uint256 index);
     error PermissionViolation(address delegatee, Permission permission);
     error NotDelegateeWithRestrictedPermission(address delegatee);
-    error InvalidProposalStatus(ProposalStatus status);
+    error InvalidProposalStatus(ProposalStatus currentStatus, ProposalStatus status);
 
     event NewERC721Delegated(
         address indexed delegatee,
@@ -64,9 +64,10 @@ interface IDelegatorAccount {
     );
 
     event CalldataProposed(
+        bytes32 indexed hash,
         address indexed caller,
-        address[] indexed targets,
-        bytes[] indexed data,
+        address[] targets,
+        bytes[] data,
         uint256[] value,
         NFTInfo info,
         bool revertOnFailure
@@ -108,6 +109,10 @@ interface IDelegatorAccount {
         NFTInfo calldata info,
         bool continueOnFailure
     ) external payable returns (bytes[] memory results);
+
+    function delegator() external view returns (address);
+
+    function proposedCalldata(bytes32 hash) external view returns (ProposalStatus);
 
     function getDelegateeInfo(address delegatee, NFTInfo memory info) external view returns (Permission permission, uint256 expiration);
 
