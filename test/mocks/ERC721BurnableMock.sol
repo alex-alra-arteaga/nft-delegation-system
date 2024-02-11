@@ -20,6 +20,10 @@ contract ERC721BurnableMock is ERC721Enumerable, ERC721Burnable, IERC721Burnable
         }
     }
 
+    function mint(address to, uint256 tokenId) public {
+        _mint(to, tokenId);
+    }
+
     function supportsInterface(
         bytes4 interfaceId
     ) public view virtual override(ERC721, ERC721Enumerable, IERC165) returns (bool) {
