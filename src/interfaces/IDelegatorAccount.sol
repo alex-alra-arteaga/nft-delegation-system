@@ -123,6 +123,6 @@ interface IDelegatorAccount {
         address from,
         uint256 tokenId,
         bytes calldata data
-    ) external returns (bytes4);
+    ) external pure returns (bytes4);
 
 }

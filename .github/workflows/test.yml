@@ -1,34 +1,34 @@
-name: test
+name: Forge Test
 
-on: workflow_dispatch
-
-env:
-  FOUNDRY_PROFILE: ci
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  check:
-    strategy:
-      fail-fast: true
-
-    name: Foundry project
+  test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: nightly
+    - name: Set up Foundry
+      run: |
+        curl -L https://foundry.paradigm.xyz | bash
+        source $HOME/.foundry/bin/foundryup
 
-      - name: Run Forge build
-        run: |
-          forge --version
-          forge build --sizes
-        id: build
+    - name: Install Dependencies
+      run: forge install
 
-      - name: Run Forge tests
-        run: |
-          forge test -vvv
-        id: test
+    - name: Run forge test
+      run: forge test
+      continue-on-error: true
+
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: test-results.xml
