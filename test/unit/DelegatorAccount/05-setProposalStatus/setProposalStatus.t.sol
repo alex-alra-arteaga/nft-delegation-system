@@ -10,7 +10,7 @@ contract SetProposalStatusTest is BaseTest {
     function setUp() public override {
         super.setUp();
 
-        vm.prank(DELEGATEE);
+        vm.startPrank(DELEGATEE);
         lpAccount.proposeCalldataExecution(
             lpTargets,
             lpData,
@@ -23,10 +23,10 @@ contract SetProposalStatusTest is BaseTest {
     function test_WhenMsgSenderIsNotDelegator() external {
         // it should revert with NotDelegator.
 
-        vm.prank(RANDOM_USER);
         vm.expectRevert(
             abi.encodeWithSelector(IDelegatorAccount.NotDelegator.selector, RANDOM_USER)
         );
+        vm.startPrank(RANDOM_USER);
         lpAccount.setProposalStatus(0, IDelegatorAccount.ProposalStatus.APPROVED);
     }
 
@@ -44,16 +44,16 @@ contract SetProposalStatusTest is BaseTest {
             )
         );
 
-        vm.prank(LP_DELEGATOR);
         vm.expectRevert(
             abi.encodeWithSelector(IDelegatorAccount.InvalidProposalStatus.selector, IDelegatorAccount.ProposalStatus.UNINITIALIZED, IDelegatorAccount.ProposalStatus.APPROVED)
         );
+        vm.startPrank(LP_DELEGATOR);
         lpAccount.setProposalStatus(incorrectProposalHash, IDelegatorAccount.ProposalStatus.APPROVED);
     }
 
     function test_WhenTheNewProposalStatusIsNeitherExecutedNorRejected() external {
         // it should revert with InvalidProposalStatus.
-
+        
         vm.startPrank(LP_DELEGATOR);
         vm.expectRevert(
             abi.encodeWithSelector(IDelegatorAccount.InvalidProposalStatus.selector, IDelegatorAccount.ProposalStatus.PENDING, IDelegatorAccount.ProposalStatus.PENDING)

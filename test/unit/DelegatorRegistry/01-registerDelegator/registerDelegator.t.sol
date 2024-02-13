@@ -18,7 +18,7 @@ contract RegisterDelegatorTest is BaseTest {
         vm.expectRevert(
             abi.encodeWithSelector(Clones.ERC1167FailedCreateClone.selector)
         );
-        vm.prank(DELEGATOR);
+        vm.startPrank(DELEGATOR);
         registry.registerDelegator();
     }
 
@@ -40,7 +40,7 @@ contract RegisterDelegatorTest is BaseTest {
 
         emit DelegatorRegistered(ERC721A_DELEGATOR, expectedAccountAddress);
 
-        vm.prank(ERC721A_DELEGATOR);
+        vm.startPrank(ERC721A_DELEGATOR);
         registry.registerDelegator();
     }
 }

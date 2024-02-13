@@ -8,7 +8,7 @@ contract ExecuteProposalTest is BaseTest {
     function setUp() public override {
         super.setUp();
 
-        vm.prank(DELEGATEE);
+        vm.startPrank(DELEGATEE);
         lpAccount.proposeCalldataExecution(
             lpTargets,
             lpData,
@@ -21,7 +21,7 @@ contract ExecuteProposalTest is BaseTest {
     function test_WhenProposedCalldataIsNotApproved() external {
         // it should revert with NotDelegated.
 
-        vm.prank(LP_DELEGATOR);
+        vm.startPrank(LP_DELEGATOR);
         lpAccount.setProposalStatus(proposalHash, IDelegatorAccount.ProposalStatus.REJECTED);
 
         // Rejected proposal
@@ -54,10 +54,10 @@ contract ExecuteProposalTest is BaseTest {
         // it should set the proposal state to Executed.
         // it should execute the proposed calldata.
 
-        vm.prank(LP_DELEGATOR);
+        vm.startPrank(LP_DELEGATOR);
         lpAccount.setProposalStatus(proposalHash, IDelegatorAccount.ProposalStatus.APPROVED);
 
-        vm.prank(DELEGATEE);
+        vm.startPrank(DELEGATEE);
         lpAccount.executeProposal(
             lpTargets,
             lpData,

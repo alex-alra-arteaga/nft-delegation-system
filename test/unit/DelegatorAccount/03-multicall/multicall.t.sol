@@ -151,7 +151,7 @@ contract MulticallTest is BaseTest {
         vm.rollFork(type(uint48).max);
         */
         // I'll change it in a less hacky way
-        vm.prank(DELEGATOR);
+        vm.startPrank(DELEGATOR);
         account.revokeERC721(erc721Info, DELEGATEE);
 
         vm.startPrank(DELEGATEE);
@@ -181,10 +181,10 @@ contract MulticallTest is BaseTest {
         vm.startPrank(DELEGATOR);
         erc721.setApprovalForAll(address(account), false);
 
-        vm.prank(DELEGATEE);
         vm.expectRevert(
             abi.encodeWithSelector(IERC721Errors.ERC721InsufficientApproval.selector, address(account), erc721Info.tokenId)
         );
+        vm.startPrank(DELEGATEE);
         account.multicall(targets, data, values, erc721Info, false);
 
     }
@@ -346,7 +346,7 @@ contract MulticallTest is BaseTest {
         // give the delegatee some ETH
         deal(DELEGATEE, 1 ether);
 
-        vm.prank(DELEGATOR);
+        vm.startPrank(DELEGATOR);
         account.delegateERC721(
             erc721Info,
             address(ethTransferFail),

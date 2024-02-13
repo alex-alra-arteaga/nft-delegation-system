@@ -30,7 +30,7 @@ contract ProposeCalldataExecutionTest is BaseTest {
     function test_WhenMsgSenderPermissionIsUNRESTRICTED() external {
         // it should revert with NotDelegateeWithRestrictedPermission.
 
-        vm.prank(LP_DELEGATOR);
+        vm.startPrank(LP_DELEGATOR);
         lpAccount.delegateERC721(
             lpNFTInfo,
             DELEGATEE,
@@ -73,7 +73,6 @@ contract ProposeCalldataExecutionTest is BaseTest {
     function test_ShouldEmitAProposalCreatedEvent() external {
         // it should emit a ProposalCreated event.
 
-        vm.prank(DELEGATEE);
 
         vm.expectEmit(true, true, false, true, address(lpAccount));
 
@@ -87,6 +86,7 @@ contract ProposeCalldataExecutionTest is BaseTest {
             false
         );
 
+        vm.startPrank(DELEGATEE);
         lpAccount.proposeCalldataExecution(
             lpTargets,
             lpData,

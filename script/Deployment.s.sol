@@ -8,6 +8,8 @@ import {DelegatorRegistry} from "../src/DelegatorRegistry.sol";
 import {BaseDeployer} from "./BaseDeployer.s.sol";
 
 contract DelegatorsDeploymentScript is Script, BaseDeployer {
+    address internal prevAccountAddress;
+    address internal prevRegistryAddress;
     
     function setUp() public {}
     // RUN with --multi
@@ -93,5 +95,7 @@ contract DelegatorsDeploymentScript is Script, BaseDeployer {
         console.log("DelegatorRegistry address: ", address(registry));
 
         // Ideally there should be a check for the consistency of the contract addresses
+        require(prevAccountAddress == address(implementation), "Deploying address has unsynced nonces on different chains");
+        require(prevRegistryAddress == address(registry), "Deploying address has unsynced nonces on different chains");
     }
 }

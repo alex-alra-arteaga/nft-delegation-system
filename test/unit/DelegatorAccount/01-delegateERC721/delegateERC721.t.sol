@@ -89,7 +89,7 @@ contract DelegateERC721Test is BaseTest {
         bytes memory returnData = abi.encodeWithSelector(IDelegatorAccount.NotDelegator.selector, address(account));
         vm.expectRevert(abi.encodeWithSelector(IDelegatorAccount.CallError.selector, returnData, 0));
 
-        vm.prank(DELEGATEE);
+        vm.startPrank(DELEGATEE);
         account.multicall(targets, data, values, erc721Info, false);
     }
 
