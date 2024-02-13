@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant Delegatee as Delegatee
     participant DA as Delegator Account
@@ -25,3 +26,4 @@ sequenceDiagram
         DA-->>Delegatee: Execution denied
         Note over DA: Proposal not approved or executed
     end
+```

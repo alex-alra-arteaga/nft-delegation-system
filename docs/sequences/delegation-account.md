@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant Delegator as Delegator
     participant DA as Delegator Account
@@ -18,3 +19,4 @@ sequenceDiagram
         DA->>Delegator: ChangedDelegateeConfig Event
     end
     Note over DA: Registers or updates delegation
+```

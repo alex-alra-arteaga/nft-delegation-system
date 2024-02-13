@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant Delegatee as Delegatee
     participant DA as Delegator Account
@@ -15,3 +16,4 @@ sequenceDiagram
     DA->>ERC721: safeTransferFrom(DA, Delegator, tokenId)
     Note over DA: NFT returned to Delegator
     DA-->>Delegatee: Returns call results
+```

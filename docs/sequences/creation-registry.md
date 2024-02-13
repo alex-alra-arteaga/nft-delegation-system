@@ -1,3 +1,4 @@
+````mermaid
 sequenceDiagram
     participant Delegator as Delegator
     participant DR as Delegator Registry
@@ -10,3 +11,4 @@ sequenceDiagram
     DA-->>DR: Account Initialized
     DR->>Delegator: Returns Account Address
     Note over DR: Maps Delegator to Account
+````
