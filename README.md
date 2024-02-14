@@ -1,10 +1,10 @@
 # NFT Delegation System, a.k.a FortDel
 
-FortDel is a non-costudial ERC721 delegation system that allows delegators the degree of flexibility and security they desire, to their delegatees.
-FortDel is a new primitive for Account Abstraction wallets, it is interoperable with any type of Account Abstraction, ERC-6551 and EOA wallets.
-The protocol is designed to be a simple, immutable, and trust-minimized base layer that allows for a wide variety of other features to be built on top.
-It provides different delegatees permissions and restricted functionalities at the discretion of the delegator.
-FortDel also offers a convenient developer experience, with a multichain registry and base implementation present at the same address on all chains.
+FortDel is a non-costudial ERC721 delegation system that allows delegators the degree of flexibility and security they desire, to their delegatees.   
+FortDel is a new primitive for Account Abstraction wallets, it is interoperable with any type of Account Abstraction, ERC-6551 and EOA wallets.   
+The protocol is designed to be a simple, immutable, and trust-minimized base layer that allows for a wide variety of other features to be built on top.   
+It provides different delegatees permissions and restricted functionalities at the discretion of the delegator.   
+FortDel also offers a convenient developer experience, with a multichain registry and base implementation present at the same address on all chains.   
 
 ## Table of Contents
 
@@ -69,27 +69,27 @@ There are 2 main contracts in FortDel protocol:
 
 ### Security Considerations
 
-As far as it is known, the only attack vector are delegatees with UNRESTRICTED permissions. Since the Delegator is mandatated to 'setApprovalForAll' to the `DelegatorAccount`, if multicall targets the NFT contract, it can `transferFrom` all tokens of that respective collection to the delegatee. This is a known attack vector, and the delegator should be aware of the risks of delegating to a delegatee with UNRESTRICTED permissions.
-Such a permission should be used only for trusted delegatees.
+As far as it is known, the only attack vector are delegatees with UNRESTRICTED permissions. Since the Delegator is mandatated to 'setApprovalForAll' to the `DelegatorAccount`, if multicall targets the NFT contract, it can `transferFrom` all tokens of that respective collection to the delegatee. This is a known attack vector, and the delegator should be aware of the risks of delegating to a delegatee with UNRESTRICTED permissions.   
+Such a permission should be used only for trusted delegatees.   
 
-There are 2 solutions to this attack vector:
-1. The approval is done via the function `approve`, which works for a single token, but is cleared after a transfer, so the delegator should approve the token again after each multicall, which is impractical.
-2. The DelegatorAccount is deployed per a tokenId basis, not by per delegator basis, so the delegator can have a different DelegatorAccount for each NFT, and then the delegatee can only interact with the NFT that the delegator has approved to the delegatee. This has clear gas cost inconveniences.
+There are 2 solutions to this attack vector:   
+1. The approval is done via the function `approve`, which works for a single token, but is cleared after a transfer, so the delegator should approve the token again after each multicall, which is impractical.   
+2. The DelegatorAccount is deployed per a tokenId basis, not by per delegator basis, so the delegator can have a different DelegatorAccount for each NFT, and then the delegatee can only interact with the NFT that the delegator has approved to the delegatee. This has clear gas cost inconveniences.   
 
-That is why the current design is to have a proposal process, where the delegatee can propose a transaction to the delegator, and the delegator via off-chain simulation can verify there is no malicious intent (checking no `transferFrom` calls to the delegatee), and then approve the proposal, and then the delegatee can execute the proposal, which will be a safe way to interact with the NFT.
-Such a simulator would be very simple, just checking the calldata and the multicall targets, and then the delegator can sign the proposal, and the delegatee can execute it.
-This can be done on-chain, but it is a great gas cost and complexity I'm not willing to take for this technical test. But I'm open to study its safety and gas cost in the future if Openfort team is interested.
+That is why the current design is to have a proposal process, where the delegatee can propose a transaction to the delegator, and the delegator via off-chain simulation can verify there is no malicious intent (checking no `transferFrom` calls to the delegatee), and then approve the proposal, and then the delegatee can execute the proposal, which will be a safe way to interact with the NFT.   
+Such a simulator would be very simple, just checking the calldata and the multicall targets, and then the delegator can sign the proposal, and the delegatee can execute it.   
+This can be done on-chain, but it is a great gas cost and complexity I'm not willing to take for this technical test. But I'm open to study its safety and gas cost in the future if Openfort team is interested.   
 
-For more design trade-offs and choices, refer to the [docs/](docs/) directory. They are the docs/thoughts I have written since the beginning of the project.
+For more design trade-offs and choices, refer to the [docs/](docs/) directory. They are the docs/thoughts I have written since the beginning of the project.   
 
 #### Testing Choices
 
-Over all the testing process I know, decided to use the following:
-- Unit Testing: They are a must and are very helpful to validate the code correctness in the architecture design process. Once the architecture minimal template is done I challenge my assumption by writing a tree with every action each branch/transition is supposed to do.
-- Invariants Testing: Unit testing are stateless and don't cover transitions and scenarios that you can't think of. With a good invariant testing suite you cover most of the possible state scenarios and transitions.
-But I have to say that this isn't the best of the contracts to do invariants testing, since it heavily depends on interactions with any other contract (through the multicalls), that's the reason I have continued with the following test type.
-- Symbolic Testing: It is the best way to prove the correctness of the contract, since it explores all the possible paths and state transitions, and it is the only way to prove the correctness of the contract (if the tests and `vm.assume` assumptions are correctly writed). I have used Halmos, a symbolic execution engine, to formally verify/prove the correctness of the DelegatorAccount to explore paths that'd cause the delegator to lose NFTs ownership.
-Even though, since it is the second time I use Halmos and counterexamples are not very clear, it has been a helpful tool to prove the correctness of the contract.
+Over all the testing process I know, decided to use the following:   
+- Unit Testing: They are a must and are very helpful to validate the code correctness in the architecture design process. Once the architecture minimal template is done I challenge my assumption by writing a tree with every action each branch/transition is supposed to do.   
+- Invariants Testing: Unit testing are stateless and don't cover transitions and scenarios that you can't think of. With a good invariant testing suite you cover most of the possible state scenarios and transitions.   
+But I have to say that this isn't the best of the contracts to do invariants testing, since it heavily depends on interactions with any other contract (through the multicalls), that's the reason I have continued with the following test type.   
+- Symbolic Testing: It is the best way to prove the correctness of the contract, since it explores all the possible paths and state transitions, and it is the only way to prove the correctness of the contract (if the tests and `vm.assume` assumptions are correctly writed). I have used Halmos, a symbolic execution engine, to formally verify/prove the correctness of the DelegatorAccount to explore paths that'd cause the delegator to lose NFTs ownership.   
+Even though, since it is the second time I use Halmos and counterexamples are not very clear, it has been a helpful tool to prove the correctness of the contract.   
 
 ### Future Features
 
