@@ -1,10 +1,10 @@
 # NFT Delegation System, a.k.a FortDel
 
-FortDel is a non-costudial ERC721 delegation system that allows delegators the degree of flexibility and security they desire, to their delegatees.   
-FortDel is a new primitive for Account Abstraction wallets, it is interoperable with any type of Account Abstraction, ERC-6551 and EOA wallets.   
-The protocol is designed to be a simple, immutable, and trust-minimized base layer that allows for a wide variety of other features to be built on top.   
-It provides different delegatees permissions and restricted functionalities at the discretion of the delegator.   
-FortDel also offers a convenient developer experience, with a multichain registry and base implementation present at the same address on all chains.   
+- FortDel is a non-costudial ERC721 delegation system that allows delegators the degree of flexibility and security they desire to their delegatees.   
+- FortDel is a new primitive for Account Abstraction wallets, it is interoperable with any type of Account Abstraction, ERC-6551 and EOA wallets.   
+- The protocol is designed to be a simple, immutable, and trust-minimized base layer that allows for a wide variety of other features to be built on top.   
+- It provides different delegatees permissions and restricted functionalities at the discretion of the delegator.   
+- FortDel also offers a convenient developer experience, with a multichain registry and base implementation present at the same address on all chains.   
 
 ## Table of Contents
 
