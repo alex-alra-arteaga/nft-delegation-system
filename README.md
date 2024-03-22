@@ -28,22 +28,22 @@
 ## Repository Structure
 
 The codebase is organized as follows:
-- docs/: Contains the developer thought process since the beginning of the project. Design choices, changes, security considerations and future features have been documented on the go.
-- src/: Contains the 2 main contracts, DelegatorsRegistry and DelegatorAccount, and the interfaces they implement.
-- scripts/: Contains the multichain deployment scripts.
-- test/: Contains the tests for the 2 main contracts.
-    - test/unit/: Unit testing with 100% coverage, designed following the Branching Tree Technique, all branches and state transitions are tested under no developer assumptions since BTT is done previously the code writting begins. All tests are run with fork testing Ethereum mainnet and staging real case scenarios, e.g. collecting UniswapV3 liquidity.
-    - test/invariants/: Invariants testing, specifically 'stateful fuzzing', since the invariants are put under breakage with changing program and environment states. Invariants are tested every run. In my case run it for 100_000_000 times with no breakage.
-    - test/symbolic/: Leveraging Halmos, a symbolic execution engine to formally verify/prove the correctness of the DelegatorAccount to explore paths that'd cause the delegator to lose NFTs ownership.
--env.example: Contains the environment variables that are used in the deployment scripts and fork testing.
+- `docs/`: Contains the developer thought process since the beginning of the project. Design choices, changes, security considerations and future features have been documented on the go.
+- `src/`: Contains the 2 main contracts, DelegatorsRegistry and DelegatorAccount, and the interfaces they implement.
+- `scripts/`: Contains the multichain deployment scripts.
+- `test/`: Contains the tests for the 2 main contracts.
+    - `test/unit/`: Unit testing with 100% coverage, designed following the Branching Tree Technique, all branches and state transitions are tested under no developer assumptions since BTT is done previously the code writting begins. All tests are run with fork testing Ethereum mainnet and staging real case scenarios, e.g. collecting UniswapV3 liquidity.
+    - `test/invariants/`: Invariants testing, specifically 'stateful fuzzing', since the invariants are put under breakage with changing program and environment states. Invariants are tested every run. In my case run it for 100_000_000 times with no breakage.
+    - `test/symbolic/`: Leveraging Halmos, a symbolic execution engine to formally verify/prove the correctness of the DelegatorAccount to explore paths that'd cause the delegator to lose NFTs ownership.
+- `env.example`: Contains the environment variables that are used in the deployment scripts and fork testing.
 
 ## Technical Documentation
 
 ### Protocol Overview
 
 There are 2 main contracts in FortDel protocol:
-- DelegatorAccount: It is the intermediary contract between the delegator and the delegatee. It is the endpoint for the delegator to approve their NFTs benefits to the delegatee. Has 2 possible paths to execute transactions with the NFT ownership as msg.sender, the direct one, where the delegators applied restrictions are enforced or not, and the indirect one, which involves a 2 step proposal process in order to execute any transaction.
-- DelegatorsRegistry: It is a multichain minimal proxy registry which stores the DelegatorAccount implementation address. It's the endpoint for delegators to create their own DelegatorAccount.
+- [DelegatorAccount](https://github.com/alex-alra-arteaga/nft-delegation-system/blob/main/src/DelegatorAccount.sol): It is the intermediary contract between the delegator and the delegatee. It is the endpoint for the delegator to approve their NFTs benefits to the delegatee. Has 2 possible paths to execute transactions with the NFT ownership as msg.sender, the direct one, where the delegators applied restrictions are enforced or not, and the indirect one, which involves a 2 step proposal process in order to execute any transaction.
+- [DelegatorsRegistry](https://github.com/alex-alra-arteaga/nft-delegation-system/blob/main/src/DelegatorRegistry.sol): It is a multichain minimal proxy registry which stores the DelegatorAccount implementation address. It's the endpoint for delegators to create their own DelegatorAccount.
 
 ### FortDel High Level Sequence
 
@@ -85,10 +85,10 @@ For more design trade-offs and choices, refer to the [docs/](docs/) directory. T
 #### Testing Choices
 
 Over all the testing process I know, decided to use the following:   
-- Unit Testing: They are a must and are very helpful to validate the code correctness in the architecture design process. Once the architecture minimal template is done I challenge my assumption by writing a tree with every action each branch/transition is supposed to do.   
-- Invariants Testing: Unit testing are stateless and don't cover transitions and scenarios that you can't think of. With a good invariant testing suite you cover most of the possible state scenarios and transitions.   
+- **Unit Testing**: They are a must and are very helpful to validate the code correctness in the architecture design process. Once the architecture minimal template is done I challenge my assumption by writing a tree with every action each branch/transition is supposed to do.   
+- **Invariants Testing**: Unit testing are stateless and don't cover transitions and scenarios that you can't think of. With a good invariant testing suite you cover most of the possible state scenarios and transitions.   
 But I have to say that this isn't the best of the contracts to do invariants testing, since it heavily depends on interactions with any other contract (through the multicalls), that's the reason I have continued with the following test type.   
-- Symbolic Testing: It is the best way to prove the correctness of the contract, since it explores all the possible paths and state transitions, and it is the only way to prove the correctness of the contract (if the tests and `vm.assume` assumptions are correctly writed). I have used Halmos, a symbolic execution engine, to formally verify/prove the correctness of the DelegatorAccount to explore paths that'd cause the delegator to lose NFTs ownership.   
+- **Symbolic Testing**: It is the best way to prove the correctness of the contract, since it explores all the possible paths and state transitions, and it is the only way to prove the correctness of the contract (if the tests and `vm.assume` assumptions are correctly writed). I have used Halmos, a symbolic execution engine, to formally verify/prove the correctness of the DelegatorAccount to explore paths that'd cause the delegator to lose NFTs ownership.   
 Even though, since it is the second time I use Halmos and counterexamples are not very clear, it has been a helpful tool to prove the correctness of the contract.   
 
 ### Future Features
