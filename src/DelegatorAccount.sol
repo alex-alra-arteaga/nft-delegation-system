@@ -7,7 +7,7 @@ import {IDelegatorAccount} from "./interfaces/IDelegatorAccount.sol";
 
 /**
  * @title DelegatorAccount
- * @author Alex Arteaga, future Openfort Blockchain Engineer
+ * @author Alex Arteaga
  * @notice This contract is intended to be used as the implementation for each delegator to delegate assets
  */
 contract DelegatorAccount is IDelegatorAccount {

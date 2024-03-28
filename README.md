@@ -78,7 +78,13 @@ There are 2 solutions to this attack vector:
 
 That is why the current design is to have a proposal process, where the delegatee can propose a transaction to the delegator, and the delegator via off-chain simulation can verify there is no malicious intent (checking no `transferFrom` calls to the delegatee), and then approve the proposal, and then the delegatee can execute the proposal, which will be a safe way to interact with the NFT.   
 Such a simulator would be very simple, just checking the calldata and the multicall targets, and then the delegator can sign the proposal, and the delegatee can execute it.   
-This can be done on-chain, but it is a great gas cost and complexity I'm not willing to take for this technical test. But I'm open to study its safety and gas cost in the future if Openfort team is interested.   
+
+---
+#### Important
+Next design will include a `O(n)` parser looking for the `setApprovalForAll` function selector in the calldata, and if found, the proposal will be rejected.
+This solution eliminates the need of a proposal process and the RESTRICTED permission, since there is no attack vector anymore.  
+Expect a revamp of docs and codebase featuring this solution.
+***
 
 For more design trade-offs and choices, refer to the [docs/](docs/) directory. They are the docs/thoughts I have written since the beginning of the project.   
 
@@ -89,16 +95,16 @@ Over all the testing process I know, decided to use the following:
 - **Invariants Testing**: Unit testing are stateless and don't cover transitions and scenarios that you can't think of. With a good invariant testing suite you cover most of the possible state scenarios and transitions.   
 But I have to say that this isn't the best of the contracts to do invariants testing, since it heavily depends on interactions with any other contract (through the multicalls), that's the reason I have continued with the following test type.   
 - **Symbolic Testing**: It is the best way to prove the correctness of the contract, since it explores all the possible paths and state transitions, and it is the only way to prove the correctness of the contract (if the tests and `vm.assume` assumptions are correctly writed). I have used Halmos, a symbolic execution engine, to formally verify/prove the correctness of the DelegatorAccount to explore paths that'd cause the delegator to lose NFTs ownership.   
-Even though, since it is the second time I use Halmos and counterexamples are not very clear, it has been a helpful tool to prove the correctness of the contract.   
+Even though, since it is the second time I use Halmos and counterexamples are not very clear, it has been a helpful tool to prove the correctness of the contract with the internal attack vectors.   
 
 ### Future Features
 
 1. Since the primitive that FortDel offers is for accounts to flashloan NFTs, it is possible to build an economic layer where the delegator can charge a fee for the delegation of the NFTs.
-This fee can be charged by a constant and/or variable payment, e.g. via Sablier, leveraging FortDel time-expiring delegations. Can also leverage OpenForts paymaster.
+- This fee can be charged by a constant and/or variable payment, e.g. via Sablier, leveraging FortDel time-expiring delegations.  
+- The price discovery for the delegation of a certain NFT can be done via an off/onchain dutch auction, where the delegator can set a price for it, and the delegatee can bid for the delegation.
 2. A simple and powerful feature is to permit the restricted delegatees proposals with delegators off-chain signatures, e.g. via EIP-712.
 3. ERC1155 support, which would be mainly adding an `onERC1155Received` function. 
 4. ERC20 support, which would be mainly adding the [ERC-3156](https://eips.ethereum.org/EIPS/eip-3156) and a type(uint256).max approval to the DelegatorAccount.
-5. Finetuned implementation for `ERC6551OpenfortAccount`.
 
 ## Multichain Contract Addresses
 

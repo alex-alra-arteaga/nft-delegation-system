@@ -9,7 +9,7 @@ import {IDelegatorAccount} from "./interfaces/IDelegatorAccount.sol";
 
 /**
  * @title DelegatorRegistry
- * @author Alex Arteaga, future Openfort Blockchain Engineer
+ * @author Alex Arteaga
  * @notice This contract is intended to be used as a registry for multi assets delegations
  */
 contract DelegatorRegistry is IDelegatorRegistry {

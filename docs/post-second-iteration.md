@@ -19,13 +19,13 @@
     - The FULL permission will have no target neither tokenId restrictions, this is intended to be used for delegatees that are trusted.
 
 - A 'PARTIAL' approach would have no target restriction, but would search the `setApprovalForAll`, `safeTransferFrom` and `transferFrom` function selectors, and would have a `isApproved` check at the end to prevent any posterior malicious tranfer to the delegatee attacker. This will greatly increase the gas cost of the multicall, but would prevent the attack.
-- It's interesting since it would allow the delegatee to interact with cases like Uniswap's `NonFungiblePositionManager`, but its a great gas cost and complexity I'm not willing to take for this technical test. But I'm open to study its safety and gas cost in the future if Openfort team is interested.
-- But something that is doable and will implement is a execution proposal feature, where the delegator can approve delegatee proposals that interact with its own NFT in a safe way (can be offchain simulated and then approved), and then the delegatee can execute the proposal, which will be a safe way to interact with the NFT, and will be a great feature for the Openfort team to use in their Account Abstraction Wallets.
+- It's interesting since it would allow the delegatee to interact with cases like Uniswap's `NonFungiblePositionManager`, but its a great gas cost and complexity I'm not willing to take for this technical test. But I'm open to study its safety and gas cost in the future.
+- But something that is doable and will implement is a execution proposal feature, where the delegator can approve delegatee proposals that interact with its own NFT in a safe way (can be offchain simulated and then approved), and then the delegatee can execute the proposal, which will be a safe way to interact with the NFT.
 
 ## Conclusions
 
 - The design looks functional for NFTs.
-- Will go by now with the `setApprovalForAll` approach, since will be compatible with any Registry user, instead Openfort decides to use this delegation system internally for its Account Abstraction Wallets, I will use it.
+- Will go by now with the `setApprovalForAll` approach, since will be compatible with any Registry user.
 - I've undertook a small trade-off to code selfexplainingness for more gas efficiency, by having the 'isDelegated' mapping removed by the `delegateeExpiration`, which merges the delegation time expiration and the delegation existence check in one single SSTORE.
 - The alternative would be having a struct with a bool and a uint248, which would just a little bit more expensive due to 2 SSTORES, 1 cold (1000 gas) and 1 warm (100 gas), since both variable are packed inside the same bytes32 slot.
 - Lines of code are increasing but for additional features reasons, like execution proposals and the new delegator contract factory.
